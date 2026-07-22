@@ -6,10 +6,10 @@
 | Campo | Detalle | Campo | Detalle |
 |---|---|---|---|
 | **ID** | US-001 | **Módulo** | Gestión de Empleados |
-| **Épica** | Gestión de Recursos Humanos | **Sprint** | Sprint 3 |
-| **Prioridad** | Alta (Must Have) | **Story Points** | 13 SP |
+| **Épica** | Gestión de Recursos Humanos | **Sprint** | - |
+| **Prioridad** | Alta (Must Have) | **Story Points** | - |
 | **Estado** | `Ready for Development` | **Versión** | 1.0 |
-| **Autor** | Product Manager | **Fecha** | Julio 2026 |
+| **Autor** | Product Manager | **Fecha** | 22/07/2026 |
 
 ---
 
