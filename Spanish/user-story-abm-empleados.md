@@ -47,6 +47,8 @@ Este módulo de ABM centraliza la gestión del ciclo de vida del empleado desde 
 
 La empresa opera bajo certificaciones **ISO/IEC 27001:2022** *(enm. 2024)* (Seguridad de la Información) e **ISO 9001:2015** (Gestión de la Calidad), por lo que este módulo debe cumplir con los controles y cláusulas aplicables de ambas normas.
 
+**Diagrama complementario:** [diagramas-complementarios.drawio](./diagramas-complementarios.drawio) · Página 1 — Ciclo de vida del empleado
+
 ---
 
 ## Personas / Roles Involucrados
@@ -57,6 +59,8 @@ La empresa opera bajo certificaciones **ISO/IEC 27001:2022** *(enm. 2024)* (Segu
 | **Gerente de área** | Consulta del listado de su equipo | Visualizar el estado y datos de sus reportes directos |
 | **Empleado** | Consulta de sus propios datos | Ver y solicitar corrección de sus datos personales y laborales |
 | **Auditor interno** | Revisión del historial de cambios | Consultar trazabilidad de modificaciones con fecha y usuario responsable |
+
+**Diagrama complementario:** [diagramas-complementarios.drawio](./diagramas-complementarios.drawio) · Página 2 — Matriz de permisos por rol
 
 ---
 
@@ -99,6 +103,8 @@ La empresa opera bajo certificaciones **ISO/IEC 27001:2022** *(enm. 2024)* (Segu
 - Fecha y usuario que creó / modificó el registro (auditoría).
 
 </details>
+
+**Diagrama complementario:** [diagramas-complementarios.drawio](./diagramas-complementarios.drawio) · Página 5 — Entidad-Relación
 
 ---
 
@@ -243,6 +249,8 @@ Admin RRHH
 | 6 | Editar empleado | Click en empleado → Editar → modificar → Guardar → log de auditoría |
 | 7 | Baja de empleado | Click en "Dar de baja" → modal con motivo y fecha → Confirmar → revocación automática de accesos + notificación IT |
 
+**Diagrama complementario:** [diagramas-complementarios.drawio](./diagramas-complementarios.drawio) · Página 3 — Onboarding y Offboarding
+
 ---
 
 ## Definition of Done
@@ -277,6 +285,8 @@ Admin RRHH
 | US-001-SEC | Cifrado y enmascaramiento de datos sensibles | Historia técnica satélite — ver sección de Compliance |
 | — | API de correo corporativo | Necesaria para generación, notificación y revocación del email asignado |
 | — | API / proceso de IT para revocación de accesos | Requerida para CA-08 |
+
+**Diagrama complementario:** [diagramas-complementarios.drawio](./diagramas-complementarios.drawio) · Página 4 — Dependencias entre historias
 
 ---
 
