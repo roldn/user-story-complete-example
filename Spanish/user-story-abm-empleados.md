@@ -65,13 +65,14 @@ La empresa opera bajo certificaciones **ISO/IEC 27001:2022** *(enm. 2024)* (Segu
 <details>
 <summary><strong>Datos Personales</strong></summary>
 
-- Nombre completo (nombre, apellido)
+- Nombre y apellido (campos independientes)
 - DNI / CUIL *(almacenado cifrado — ver RN-09)*
+- Teléfono de contacto
+- Email personal
 - Fecha de nacimiento
 - Género (M / F / No binario / Prefiero no decirlo)
 - Nacionalidad
-- Domicilio (calle, número, localidad, provincia, código postal)
-- Teléfono de contacto y email personal
+- Domicilio (entidad relacionada 1:1 — calle, número, localidad, provincia, código postal)
 
 </details>
 
@@ -84,7 +85,7 @@ La empresa opera bajo certificaciones **ISO/IEC 27001:2022** *(enm. 2024)* (Segu
 - Puesto / Cargo
 - Tipo de contrato (efectivo, a término, pasante, freelance)
 - Modalidad de trabajo (presencial, remoto, híbrido)
-- Sede / Sucursal asignada
+- Sede asignada (entidad relacionada N:1 — nombre, dirección)
 - Supervisor directo (relación con otro empleado en el sistema)
 - Estado (Activo / Inactivo / Con licencia)
 
@@ -93,9 +94,9 @@ La empresa opera bajo certificaciones **ISO/IEC 27001:2022** *(enm. 2024)* (Segu
 <details>
 <summary><strong>Datos de Acceso y Sistema</strong></summary>
 
-- Email corporativo (autogenerado al dar de alta)
-- Rol en el sistema (permisos)
-- Fecha y usuario que creó / modificó el registro (auditoría)
+- Email corporativo (`email_corporativo`, autogenerado al dar de alta — ver RN-04).
+- Rol en el sistema (entidad relacionada N:1 — nombre, descripción de permisos).
+- Fecha y usuario que creó / modificó el registro (auditoría).
 
 </details>
 
@@ -103,50 +104,86 @@ La empresa opera bajo certificaciones **ISO/IEC 27001:2022** *(enm. 2024)* (Segu
 
 ## Criterios de Aceptación
 
-### CA-01 — Alta de empleado exitosa
-- **Dado** que estoy autenticado como Admin RRHH
-- **Cuando** completo todos los campos obligatorios del formulario de alta y presiono "Guardar"
-- **Entonces** el sistema crea el registro, genera el legajo automáticamente, asigna un email corporativo y muestra el mensaje "Empleado registrado correctamente"
+<details>
+<summary><strong>CA-01 — Alta de empleado exitosa</strong></summary> 
+    
+- <strong>Dado</strong> que estoy autenticado como Admin RRHH.
+- <strong>Cuando</strong> completo todos los campos obligatorios del formulario de alta y presiono "Guardar".
+- <strong>Entonces</strong> el sistema crea el registro, genera el legajo automáticamente, asigna un email corporativo y muestra el mensaje "Empleado registrado correctamente".
 
-### CA-02 — Alta con campos incompletos
-- **Dado** que intento guardar un empleado sin completar un campo obligatorio
-- **Cuando** presiono "Guardar"
-- **Entonces** el sistema resalta los campos vacíos en rojo y muestra un mensaje descriptivo por cada campo faltante, sin guardar el registro
+</details>
 
-### CA-03 — Alta con DNI duplicado
-- **Dado** que ingreso un DNI que ya existe en el sistema
-- **Cuando** presiono "Guardar"
-- **Entonces** el sistema bloquea la acción y muestra: "Ya existe un empleado registrado con este DNI"
+<details>
+<summary><strong>CA-02 — Alta con campos incompletos</strong></summary> 
 
-### CA-04 — Modificación de empleado
-- **Dado** que selecciono un empleado activo y edito uno o más campos
-- **Cuando** guardo los cambios
-- **Entonces** el sistema actualiza el registro y registra en el historial de auditoría el campo modificado, el valor anterior, el nuevo valor, fecha, hora y usuario que realizó el cambio
+- <strong>Dado</strong> que intento guardar un empleado sin completar un campo obligatorio.
+- <strong>Cuando</strong> presiono "Guardar".
+- <strong>Entonces</strong> el sistema resalta los campos vacíos en rojo y muestra un mensaje descriptivo por cada campo faltante, sin guardar el registro.
 
-### CA-05 — Baja lógica de empleado
-- **Dado** que selecciono la opción "Dar de baja" en un empleado activo
-- **Cuando** confirmo la acción e ingreso el motivo (renuncia / despido / vencimiento de contrato / otro) y la fecha de egreso
-- **Entonces** el estado cambia a "Inactivo", se registra el motivo y fecha, y el registro queda accesible en modo solo lectura para auditoría
+</details>
 
-### CA-06 — Búsqueda y filtrado
-- **Dado** que accedo al listado de empleados
-- **Cuando** utilizo los filtros por nombre, legajo, área, estado o fecha de ingreso
-- **Entonces** el sistema muestra únicamente los registros que coincidan con los criterios en menos de 2 segundos
+<details>
+<summary><strong>CA-03 — Alta con DNI/CUIL duplicado</strong></summary> 
+    
+- <strong>Dado</strong> que ingreso un DNI o CUIL que ya existe en el sistema.
+- <strong>Cuando</strong> presiono "Guardar".
+- <strong>Entonces</strong> el sistema bloquea la acción y muestra: "Ya existe un empleado registrado con este DNI/CUIL".
 
-### CA-07 — Exportación de listado
-- **Dado** que visualizo el listado de empleados (con o sin filtros aplicados)
-- **Cuando** presiono "Exportar"
-- **Entonces** el sistema descarga un archivo `.xlsx` con los datos visibles, excluyendo campos sensibles como CUIL si el rol no tiene permiso
+</details>
 
-### CA-08 — Revocación automática de accesos al dar de baja *(ISO 27001 control 5.18)*
-- **Dado** que un Admin RRHH confirma la baja de un empleado
-- **Cuando** el estado cambia a "Inactivo"
-- **Entonces** el sistema revoca automáticamente el acceso al email corporativo, notifica al área de IT con los detalles del empleado desvinculado, y registra la revocación en el log de auditoría con fecha y hora exacta
+<details>
+<summary><strong>CA-04 — Modificación de empleado</strong></summary> 
+    
+- <strong>Dado</strong> que selecciono un empleado activo y edito uno o más campos.
+- <strong>Cuando</strong> guardo los cambios.
+- <strong>Entonces</strong> el sistema actualiza el registro y registra en el historial de auditoría el campo modificado, el valor anterior, el nuevo valor, fecha, hora y usuario que realizó el cambio.
+  
+</details>
 
-### CA-09 — Enmascaramiento de datos sensibles por rol *(ISO 27001 control 8.24)*
-- **Dado** que un usuario con rol Gerente de área o Empleado accede a un perfil
-- **Cuando** visualiza los datos del empleado
-- **Entonces** los campos DNI y CUIL se muestran enmascarados (ej: `••••••••123`) y no pueden ser copiados ni exportados por ese rol
+<details>
+<summary><strong>CA-05 — Baja lógica de empleado</strong></summary> 
+
+- <strong>Dado</strong> que selecciono la opción "Dar de baja" en un empleado activo.
+- <strong>Cuando</strong> confirmo la acción e ingreso el motivo (renuncia / despido / vencimiento de contrato / otro) y la fecha de egreso.
+- <strong>Entonces</strong> el estado cambia a "Inactivo", se registra el motivo y fecha, y el registro queda accesible en modo solo lectura para auditoría.
+
+</details>
+
+<details>
+<summary><strong>CA-06 — Búsqueda y filtrado</strong></summary> 
+    
+- <strong>Dado</strong> que accedo al listado de empleados
+- <strong>Cuando</strong> utilizo los filtros por nombre, legajo, área, estado o fecha de ingreso
+- <strong>Entonces</strong> el sistema muestra únicamente los registros que coincidan con los criterios en menos de 2 segundos
+
+</details>
+
+<details>
+<summary><strong>CA-07 — Exportación de listado</strong></summary> 
+    
+- <strong>Dado</strong> que visualizo el listado de empleados (con o sin filtros aplicados).
+- <strong>Cuando</strong> presiono "Exportar".
+- <strong>Entonces</strong> el sistema descarga un archivo `.xlsx` con los datos visibles, excluyendo campos sensibles como CUIL si el rol no tiene permiso.
+
+</details>
+
+<details>
+<summary><strong>CA-08 — Revocación automática de accesos al dar de baja <em>(ISO 27001 control 5.18)</em></strong></summary> 
+
+- <strong>Dado</strong> que un Admin RRHH confirma la baja de un empleado.
+- <strong>Cuando</strong> el estado cambia a "Inactivo".
+- <strong>Entonces</strong> el sistema revoca automáticamente el acceso al email corporativo, notifica al área de IT con los detalles del empleado desvinculado, y registra la revocación en el log de auditoría con fecha y hora exacta.
+
+</details>
+
+<details>
+<summary><strong>CA-09 — Enmascaramiento de datos sensibles por rol <em>(ISO 27001 control 8.24)</em></strong></summary> 
+    
+- <strong>Dado</strong> que un usuario con rol Gerente de área o Empleado accede a un perfil.
+- <strong>Cuando</strong> visualiza los datos del empleado.
+- <strong>Entonces</strong> el campo `dni_cuil_cifrado` se muestra enmascarado (ej: `••••••••123`) y no puede ser copiado ni exportado por ese rol.
+
+</details>
 
 ---
 
@@ -157,12 +194,12 @@ La empresa opera bajo certificaciones **ISO/IEC 27001:2022** *(enm. 2024)* (Segu
 | RN-01 | Solo los usuarios con rol **Admin RRHH** o **Superadmin** pueden crear, editar o dar de baja empleados |
 | RN-02 | Un empleado **no puede ser eliminado físicamente**; solo puede pasarse a estado Inactivo (baja lógica) |
 | RN-03 | El legajo se genera de forma **automática, correlativa y no editable** |
-| RN-04 | El email corporativo se genera automáticamente bajo el patrón `nombre.apellido@empresa.com` al confirmar el alta |
+| RN-04 | El email corporativo se genera automáticamente bajo el patrón `nombre.apellido@empresa.com`, usando los campos `nombre` y `apellido` del registro, al confirmar el alta |
 | RN-05 | No se puede reactivar un empleado dado de baja sin aprobación de un usuario **Superadmin** |
 | RN-06 | Toda modificación queda registrada en el log de auditoría con usuario, fecha/hora, campo modificado y valores anterior/nuevo |
 | RN-07 | Los Gerentes de área solo pueden **visualizar** empleados de su departamento, no editarlos |
 | RN-08 | Los logs de auditoría se retienen por un **mínimo de 5 años** y no pueden ser modificados ni eliminados por ningún rol *(ISO 27001 control 8.15)* |
-| RN-09 | Los campos DNI y CUIL se almacenan **cifrados en reposo** (AES-256 o equivalente) y solo se muestran en texto plano a roles con permiso explícito *(ISO 27001 control 8.24)* |
+| RN-09 | El campo `dni_cuil_cifrado` se almacena **cifrado en reposo** (AES-256 o equivalente) y solo se muestra en texto plano a roles con permiso explícito *(ISO 27001 control 8.24)* |
 
 ---
 
